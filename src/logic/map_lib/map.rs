@@ -1,11 +1,8 @@
-use crate::{
-    graphics::tui::tui_lib::Drawable,
-    math_lib::vector::{Vector, Vector2U},
-};
-const WIDTH: usize = 10;
-const HEIGHT: usize = 10;
-const HEIGHT_LESS_ONE: usize = HEIGHT - 1;
-const WIDTH_LESS_ONE: usize = WIDTH - 1;
+use crate::math_lib::vector::{Vector, Vector2U};
+pub const WIDTH: usize = 10;
+pub const HEIGHT: usize = 10;
+pub const HEIGHT_LESS_ONE: usize = HEIGHT - 1;
+pub const WIDTH_LESS_ONE: usize = WIDTH - 1;
 #[derive(Debug, Clone, Copy)]
 pub enum TileType {
     WATER,
@@ -30,18 +27,10 @@ impl Tile {
         }
     }
 }
-impl Drawable for Tile {
-    fn draw(&self) {
-        match self.tile_type {
-            TileType::ROCK => print!("\u{1F378}"),
-            TileType::WATER => print!("\u{1F37A}"),
-        }
-    }
-}
 #[derive(Debug)]
 pub struct Map {
-    data: Vector<Tile, { WIDTH * HEIGHT }>,
-    size: Vector<usize, 2>,
+    pub data: Vector<Tile, { WIDTH * HEIGHT }>,
+    pub size: Vector<usize, 2>,
 }
 impl Map {
     pub fn create() -> Self {
@@ -57,35 +46,6 @@ impl Map {
                 v
             },
             size: Vector::default(WIDTH),
-        }
-    }
-}
-impl Drawable for Map {
-    fn draw(&self) {
-        for tile in self.data {
-            let &position_y = tile.position.get(1);
-            let &position_x = tile.position.get(0);
-            /*
-             *    +-+
-             *    |x|
-             *    +-+
-             *
-             * */
-            if position_y == 0 && position_x == 0 {
-                print!("/|");
-            } else if position_y == WIDTH_LESS_ONE {
-            } else if position_y == 0 {
-                print!("/|");
-            }
-            tile.draw();
-
-            if position_y == 0 && position_x == 0 {
-                print!("|");
-            } else if position_y == WIDTH_LESS_ONE {
-                println!("\\");
-            } else {
-                print!("|");
-            }
         }
     }
 }
